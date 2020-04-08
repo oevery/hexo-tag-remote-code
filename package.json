@@ -1,0 +1,25 @@
+{
+  "name": "hexo-tag-remote-code",
+  "version": "0.0.1",
+  "description": "A hexo plugin to insert remote code when static files are generated.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoonBegonia/hexo-tag-remote-code.git"
+  },
+  "keywords": [
+    "hexo",
+    "plugin",
+    "tag",
+    "github",
+    "codeblock",
+    "code"
+  ],
+  "author": "MoonBegonia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MoonBegonia/hexo-tag-remote-code/issues"
+  },
+  "homepage": "https://github.com/MoonBegonia/hexo-tag-remote-code#readme",
+  "dependencies": {}
+}
