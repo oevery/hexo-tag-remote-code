@@ -1,21 +1,13 @@
-const https = require('https');
+const got = require('got');
 const path = require('path');
 
-function getCode(url) {
-  let data = '';
-  https
-    .get(url, (res) => {
-      res.setEncoding('utf8');
-      res.on('data', (d) => {
-        data += d;
-      });
-      res.on('end', function () {
-        return data;
-      });
-    })
-    .on('error', (err) => {
-      hexo.log.error(err);
-    });
+async function getCode(url) {
+  try {
+    const res = await got(url);
+    return res.body;
+  } catch (err) {
+    hexo.log.warn(err);
+  }
 }
 
 function getResult(data, lang, url, linkText, start, stop, codeTag) {
@@ -29,10 +21,31 @@ function getResult(data, lang, url, linkText, start, stop, codeTag) {
 }
 
 async function getRawUrl(url) {
-  if (url.search(/github\.com/) !== -1) {
+  if (url.search(/\/github\.com/) !== -1) {
     return url
       .replace(/github\.com/, 'raw.githubusercontent.com')
       .replace(/blob\//, '');
+  } else if (url.search(/\/gist\.github\.com/) !== -1) {
+    if (url.search(/#file-/) !== -1) {
+      const apiUrl = url
+        .replace(/gist\.github\.com.*\//, 'api.github.com/gists/')
+        .replace(/#file-.*/, '');
+      const files = JSON.parse(await getCode(apiUrl)).files;
+      hexo.log.info(files);
+      const lowCaseFileName = url.match(/#file-([\w-]+)/)[1].replace(/-/, '.');
+      for (let item in files) {
+        if (lowCaseFileName === item.toLowerCase()) {
+          return files[item].raw_url;
+        }
+      }
+    } else {
+      return (
+        url.replace(/gist\.github\.com\//, 'gist.githubusercontent.com/') +
+        '/raw/'
+      );
+    }
+  } else {
+    return url;
   }
 }
 
@@ -55,12 +68,18 @@ async function remoteCode(args) {
     }
   }
 
-  let rawUrl = await getRawUrl(url);
-  return new Promise(function (resolve, reject) {
-    getCode(rawUrl, (data) => {
-      resolve(getResult(data, lang, url, linkText, start, stop, codeTag));
-    });
-  });
+  const rawUrl = await getRawUrl(url);
+  const data = await getCode(rawUrl);
+  const result = await getResult(
+    data,
+    lang,
+    url,
+    linkText,
+    start,
+    stop,
+    codeTag
+  );
+  return result;
 }
 
 hexo.extend.tag.register('remote_code', remoteCode, { async: true });
