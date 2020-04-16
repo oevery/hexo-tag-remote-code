@@ -1,5 +1,9 @@
 # hexo-tag-remote-code
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/moonbegonia/hexo-tag-remote-code)
+![npm](https://img.shields.io/npm/v/hexo-tag-remote-code)
+![npm](https://img.shields.io/npm/dt/hexo-tag-remote-code)
+
 [中文介绍](./README_zh-CN.md)
 
 Fork from [hexo-tag-github-code](https://github.com/itpropro/hexo-tag-ghcode).
