@@ -1,6 +1,6 @@
 {
   "name": "hexo-tag-remote-code",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A hexo plugin to insert remote code when static files are generated.",
   "main": "index.js",
   "repository": {
