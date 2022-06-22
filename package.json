@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/MoonBegonia/hexo-tag-remote-code#readme",
   "dependencies": {
-    "got": "^10.7.0"
+    "got": "^11.8.5"
   }
 }
